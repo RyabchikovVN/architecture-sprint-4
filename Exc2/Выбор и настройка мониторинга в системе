@@ -18,3 +18,43 @@
 Я бы обязательно добавил бы:
 1. Статическую информацию, или resource, — например, называние ноды, в которой развёрнуто приложение, или называние окружения, в котором запущен сервис (dev, release и prod).
 2. Динамическую информацию — например, идентификатор текущего эндпоинта ("http_path": "GET /product/:id").
+
+Метрики:
+Number of dead-letter-exchange letters in RabbitMQ
+Number of message in flight in RabbitMQ
+Number of requests (RPS) for MES API
+Number of requests (RPS) per user for internet shop API
+Number of requests (RPS) per user for MES API
+CPU % for MES API
+Memory Utilisation for CRM API
+Memory Utilisation for MES API
+Memory Utilisation for MES db instance
+Number of connections for MES db instance
+Response time (latency) for CRM API
+Response time (latency) for MES API
+Size of S3 storage
+Size of MES db instance
+Number of HTTP 200 for CRM API
+Number of HTTP 200 for MES API
+Number of HTTP 500 for CRM API
+Number of HTTP 500 for MES API
+Number of simultanious sessions for CRM API
+Number of simultanious sessions for MES API
+Kb tranferred (received) for CRM API
+Kb tranferred (received) for MES API
+Kb provided (sent) for CRM API
+Kb provided (sent) for MES API
+
+План действий:
+1. Развернуть инстанс Prometeus с time-series базой
+2. Развернуть Grafana
+3. Доработать код вызовов микросервисов для отправки данных в Prometeus (метод push)*
+
+* Чтобы ускорить решение проблем бизнеса и сэкономить средства, я начал бы покрывать мониторингом только те микросервисы, которые ответственны за изменение статуса заказа и те, где наблюдаются проблемы в бизнес-процессах.
+Интересующие нас статусы:
+FILE_UPLOADED [онлайн-магазин] — пользователь загрузил файл с 3D-моделью или создал его с помощью конструктора.
+SUBMITTED [онлайн-магазин] — пользователь нажал на кнопку «Сделать заказ».
+PRICE_CALCULATED [MES] — система посчитала стоимость заказа.
+MANUFACTURING_APPROVED [CRM] — заказ подтверждён, его можно отдавать в производство.
+MANUFACTURING_STARTED [MES] — оператор взял заказ в работу.
+MANUFACTURING_COMPLETED [MES] — оператор выполнил заказ.
